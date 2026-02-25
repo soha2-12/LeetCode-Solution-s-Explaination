@@ -1,0 +1,45 @@
+LeetCode 1356 - 
+Sort Integers by Number of 1 Bits
+Problem Statement
+Given an integer array arr, sort the integers in ascending order based on the number of 1's in their binary representation. If two numbers have the same number of 1 bits, then sort them by their numeric value.
+Approach
+The solution follows these steps:
+1. Create a helper function to count the number of set bits (1s) in a number using bit manipulation.
+2. For each number in the array, store a tuple (bit_count, number).
+3. Sort the list of tuples. Python automatically sorts tuples first by the first element, then by the second if needed.
+4. Extract the numbers from the sorted tuples to get the final sorted array.
+Bit Counting Logic
+To count the number of 1 bits in a number, we use the following logic:
+• num & 1 checks whether the last binary digit is 1.
+• num >> 1 shifts the number to the right by one bit (removes the last bit).
+• Repeat until the number becomes 0.
+Example
+Input: arr = [0,1,2,3,4,5,6,7,8]
+Output: [0,1,2,4,8,3,5,6,7]
+Python Code
+
+class Solution(object):
+    def sortByBits(self, arr):
+        
+        def countBits(num):
+            count = 0
+            while num:
+                count += num & 1
+                num = num >> 1
+            return count
+        
+        temp = []
+        
+        for num in arr:
+            temp.append((countBits(num), num))
+        
+        temp.sort()
+        
+        result = []
+        for bits, num in temp:
+            result.append(num)
+        
+        return result
+
+Time Complexity
+Counting bits takes O(log n) time for each number. Sorting takes O(n log n). Overall time complexity is O(n log n).
