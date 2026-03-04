@@ -1,0 +1,57 @@
+LeetCode 1582 - Special Positions in a Binary Matrix
+1. Problem Understanding
+We are given a binary matrix (a matrix containing only 0s and 1s). A position (i, j) is called a special position if:
+1) The value at that position is 1.
+2) All other elements in row i are 0.
+3) All other elements in column j are 0.
+
+In simple words, the 1 must be the only 1 in its entire row and its entire column.
+2. Methodology Used
+Instead of checking every row and column repeatedly for each 1 (which would increase time complexity), we use a counting-based optimization approach.
+Step 1: Count the number of 1s in each row.
+Step 2: Count the number of 1s in each column.
+Step 3: Traverse the matrix again and check:
+        If mat[i][j] == 1 AND row_count[i] == 1 AND col_count[j] == 1,
+        then that position is a special position.
+3. Logic Behind the Approach
+The main logic is based on counting occurrences.
+
+If a row contains more than one 1, then none of the 1s in that row can be special.
+Similarly, if a column contains more than one 1, then none of the 1s in that column can be special.
+
+So instead of checking the entire row and column repeatedly, we precompute counts. Then we simply verify the condition in constant time for each cell.
+4. Python Solution
+class Solution:
+    def numSpecial(self, mat):
+        m = len(mat)
+        n = len(mat[0])
+
+        row_count = [0] * m
+        for i in range(m):
+            row_count[i] = sum(mat[i])
+
+        col_count = [0] * n
+        for j in range(n):
+            for i in range(m):
+                col_count[j] += mat[i][j]
+
+        special = 0
+        for i in range(m):
+            for j in range(n):
+                if mat[i][j] == 1 and row_count[i] == 1 and col_count[j] == 1:
+                    special += 1
+
+        return special
+5. Time and Space Complexity
+Time Complexity: O(m × n)
+We traverse the matrix multiple times, but each traversal is linear.
+
+Space Complexity: O(m + n)
+We use two extra arrays to store row and column counts.
+6. Key Concepts Applied
+- Matrix Traversal
+- Counting Technique
+- Optimization of Brute Force
+- Logical Condition Checking
+
+This problem strengthens understanding of matrix handling and efficient counting strategies.
