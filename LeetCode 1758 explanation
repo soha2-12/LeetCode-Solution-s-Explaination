@@ -1,0 +1,54 @@
+LeetCode 1758: Minimum Changes To Make Alternating Binary String
+Problem Statement
+You are given a binary string s consisting only of characters '0' and '1'. The task is to determine the minimum number of changes required to make the string alternating. An alternating string means that no two adjacent characters are the same. For example, valid alternating strings look like '010101...' or '101010...'.
+Key Observation
+There are only two possible alternating patterns for any binary string:
+1. Starting with '0' → 010101...
+2. Starting with '1' → 101010...
+
+To solve the problem, we compare the given string with both patterns and count how many characters need to be changed in each case.
+Methodology
+1. Initialize two counters:
+   - change1: number of changes needed if the pattern starts with '0'.
+   - change2: number of changes needed if the pattern starts with '1'.
+
+2. Traverse through the string using a loop.
+
+3. For each index i:
+   - If we assume the pattern starts with '0', then:
+       Even index → expected '0'
+       Odd index  → expected '1'
+     If the character does not match, increase change1.
+
+   - If we assume the pattern starts with '1', then:
+       Even index → expected '1'
+       Odd index  → expected '0'
+     If the character does not match, increase change2.
+
+4. After traversing the entire string, the answer will be the minimum between change1 and change2.
+Python Solution
+class Solution:
+    def minOperations(self, s: str) -> int:
+        change1 = 0
+        change2 = 0
+
+        for i in range(len(s)):
+            if s[i] != ('0' if i % 2 == 0 else '1'):
+                change1 += 1
+            if s[i] != ('1' if i % 2 == 0 else '0'):
+                change2 += 1
+
+        return min(change1, change2)
+Example
+Input: s = '0100'
+
+Pattern 1 (starting with 0): 0101 → 1 change required
+Pattern 2 (starting with 1): 1010 → 3 changes required
+
+Minimum changes = 1
+Complexity Analysis
+Time Complexity: O(n)
+The algorithm traverses the string once.
+
+Space Complexity: O(1)
+No extra data structures are used except a few counters.
