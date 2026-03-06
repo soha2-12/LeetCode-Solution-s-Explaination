@@ -1,0 +1,30 @@
+LeetCode 1784: Check if Binary String Has at Most One Segment of Ones
+1. Problem Statement
+You are given a binary string s consisting only of characters '0' and '1'. The task is to determine whether the string contains at most one contiguous segment of '1's. A segment of ones means a continuous block of '1' characters without interruption by '0'. If there is only one such segment or none, return True. Otherwise, return False.
+2. Example
+Example 1:
+Input: s = '110'
+Output: True
+Explanation: There is only one continuous segment of ones ('11').
+Example 2:
+Input: s = '1001'
+Output: False
+Explanation: There are two separate segments of ones ('1' and '1').
+3. Key Observation
+If a binary string has more than one segment of ones, then there must be a pattern where a '1' segment ends, followed by a '0', and then another '1' appears. This creates the substring pattern '01'.
+4. Logic Behind the Solution
+The idea is simple. If the substring '01' exists in the string, it means that a block of ones has ended and another one starts later. This indicates more than one segment of ones. Therefore, we only need to check whether '01' appears in the string.
+5. Algorithm
+Step 1: Take the binary string s as input.
+Step 2: Check if the substring '01' exists in the string.
+Step 3: If '01' is found, return False because multiple segments exist.
+Step 4: Otherwise, return True since there is at most one segment of ones.
+6. Python Implementation
+class Solution(object):
+    def checkOnesSegment(self, s):
+        return "01" not in s
+7. Time and Space Complexity
+Time Complexity: O(n), where n is the length of the string.
+Space Complexity: O(1), since no additional data structures are used.
+8. Conclusion
+This problem can be solved efficiently by observing patterns in the binary string. Instead of explicitly counting segments, we simply check for the presence of the '01' pattern. This leads to a very concise and optimal solution.
