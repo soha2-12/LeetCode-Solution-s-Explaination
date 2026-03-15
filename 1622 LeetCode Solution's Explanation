@@ -1,0 +1,56 @@
+LeetCode 1622: Fancy Sequence
+LeetCode 1622 – Fancy Sequence is a hard-level design problem that asks participants to implement a dynamic integer sequence supporting append, bulk addition, and multiplication—all under modular arithmetic. The challenge lies in efficiently updating and retrieving elements after many global operations.
+
+Key facts
+Difficulty: Hard
+
+Main operations: append, addAll, multAll, getIndex
+
+Modulo constant: 10⁹ + 7
+
+Constraints: ≤ 10⁵ operations total; 1 ≤ val, inc, m ≤ 100
+
+Problem statement
+Implement a class Fancy that maintains a sequence of integers and supports:
+
+append(val): Add val to the end.
+
+addAll(inc): Increase all existing elements by inc.
+
+multAll(m): Multiply all existing elements by m.
+
+getIndex(idx): Return the element at index idx (mod 10⁹ + 7), or −1 if idx is out of range.
+
+A naive O(n) update for addAll or multAll fails for large n; efficient solutions require constant- or log-time operations.
+
+Efficient solution approaches
+Two principal methods emerged among accepted solutions:
+
+Mathematical linear transformation:
+Represent each element as a × val + b, where a and b track cumulative multipliers and additions.
+
+append(val): Store (val − b) × a⁻¹ mod M, using modular inverse a⁻¹ (by Fermat’s little theorem).
+
+addAll(inc): b = (b + inc) mod M.
+
+multAll(m): a = a × m, b = b × m (mod M).
+
+getIndex(i): (a × stored[i] + b) mod M.
+This yields O(1) per operation and O(n) space.
+
+Segment tree with lazy propagation:
+Used mainly for conceptual completeness, it maintains range-update tags for addition and multiplication, ensuring O(log n) updates and queries.
+Each node stores range sums plus pending add/mul values that are pushed down as needed.
+
+Example
+["Fancy","append","addAll","append","multAll","getIndex"]
+[[],[2],[3],[7],[2],[0]]
+→ Output: [null,null,null,null,null,10]
+Sequence transitions: [2] → [5] → [5, 7] → [10, 14]; getIndex(0) = 10.
+
+Complexity
+Time: O(1) per operation (mathematical method)
+
+Space: O(n)
+
+Fancy Sequence demonstrates how modular arithmetic and affine-transformation composition can replace heavy data structures to achieve optimal constant-time updates in sequence design problems.
