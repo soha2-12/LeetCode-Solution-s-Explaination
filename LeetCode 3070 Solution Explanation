@@ -1,0 +1,81 @@
+LeetCode 3070 – Complete Explanation (Logic, Methodology & Intuition)
+1. Problem Understanding
+We are given a 2D grid and an integer k. We need to count how many submatrices:
+• Start from the top-left corner (0,0)
+• Have a sum less than or equal to k
+
+Important constraint: Every valid submatrix must start at (0,0).
+2. Brute Force Approach (Why it Fails)
+A naive approach would try all submatrices and compute their sums.
+This would take O(n^4) time, which is too slow for large inputs.
+
+So we need an optimized way to compute sums efficiently.
+3. Key Observation
+Since every submatrix must start at (0,0), each submatrix is uniquely defined by its bottom-right corner (i, j).
+So instead of checking all submatrices, we only check one per cell.
+4. Prefix Sum Concept (Core Idea)
+We use a prefix sum matrix where:
+prefix[i][j] = sum of all elements from (0,0) to (i,j)
+
+Formula:
+prefix[i][j] = grid[i][j] + prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1]
+
+This avoids recomputation and gives sum in O(1).
+5. Why Subtract Overlap?
+The top and left prefix values both include the overlapping region (i-1, j-1),
+so we subtract it once to avoid double counting.
+6. Step-by-Step Methodology
+Step 1: Initialize prefix matrix
+Step 2: Traverse each cell
+Step 3: Compute prefix sum using formula
+Step 4: If prefix[i][j] ≤ k → increment count
+Step 5: Return count
+7. Dry Run Example
+Grid:
+1 2
+3 4
+
+Prefix Matrix:
+(0,0) = 1
+(0,1) = 3
+(1,0) = 4
+(1,1) = 10
+
+If k = 5:
+Valid submatrices:
+(0,0) → sum = 1
+(0,1) → sum = 3
+(1,0) → sum = 4
+(1,1) → sum = 10 (invalid)
+
+Answer = 3
+8. Python Code
+class Solution:
+    def countSubmatrices(self, grid, k):
+        m, n = len(grid), len(grid[0])
+        prefix = [[0] * n for _ in range(m)]
+        count = 0
+
+        for i in range(m):
+            for j in range(n):
+                prefix[i][j] = grid[i][j]
+
+                if i > 0:
+                    prefix[i][j] += prefix[i - 1][j]
+                if j > 0:
+                    prefix[i][j] += prefix[i][j - 1]
+                if i > 0 and j > 0:
+                    prefix[i][j] -= prefix[i - 1][j - 1]
+
+                if prefix[i][j] <= k:
+                    count += 1
+
+        return count
+9. Complexity Analysis
+Time Complexity: O(m × n)
+Space Complexity: O(m × n)
+10. Intuition Summary
+• We reduced the problem using a key constraint (start at 0,0)
+• Prefix sum avoids recomputation
+• Each cell represents one submatrix
+• Efficient and optimal solution
