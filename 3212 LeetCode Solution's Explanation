@@ -1,0 +1,64 @@
+LeetCode 3212: Count Submatrices With Equal Frequency of X and Y
+1. Problem Understanding
+We need to count submatrices that:
+• Include (0,0)
+• Have equal number of 'X' and 'Y'
+• Have at least one 'X'
+2. Key Transformation
+Convert the grid values:
+X → +1
+Y → -1
+. → 0
+
+Now the problem becomes finding submatrices with sum = 0 and at least one X.
+3. Optimization Insight
+Since every valid submatrix must include (0,0), we only check prefix submatrices from (0,0) to (i,j), reducing complexity significantly.
+4. Prefix Sum Concept
+We use two prefix matrices:
+1. balance → stores (#X - #Y)
+2. countX → stores number of X
+
+This allows us to compute values for any prefix in O(1).
+5. Core Logic
+For each cell (i,j):
+• If balance == 0 → equal X and Y
+• If countX > 0 → at least one X
+If both conditions are true, increment the answer.
+6. Example
+Grid:
+X Y .
+Y . .
+
+Converted:
++1 -1 0
+-1  0 0
+
+Valid submatrices count = 3
+7. Complexity
+Time Complexity: O(n × m)
+Space Complexity: O(n × m)
+8. Python Code
+class Solution:
+    def numberOfSubmatrices(self, grid):
+        n, m = len(grid), len(grid[0])
+        balance = [[0]*(m+1) for _ in range(n+1)]
+        countX = [[0]*(m+1) for _ in range(n+1)]
+
+        for i in range(n):
+            for j in range(m):
+                val, x = 0, 0
+                if grid[i][j] == 'X':
+                    val, x = 1, 1
+                elif grid[i][j] == 'Y':
+                    val = -1
+
+                balance[i+1][j+1] = balance[i][j+1] + balance[i+1][j] - balance[i][j] + val
+                countX[i+1][j+1] = countX[i][j+1] + countX[i+1][j] - countX[i][j] + x
+
+        ans = 0
+        for i in range(n):
+            for j in range(m):
+                if balance[i+1][j+1] == 0 and countX[i+1][j+1] > 0:
+                    ans += 1
+
+        return ans
