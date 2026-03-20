@@ -1,0 +1,23 @@
+Minimum Absolute Difference in Sliding Submatrix (LeetCode 3567)
+Problem Overview
+You are given a matrix and a size k. For every k x k submatrix, you must find the minimum absolute difference between any two distinct values.
+Key Idea
+Instead of comparing all pairs, we sort the distinct values. The minimum absolute difference will always be between adjacent elements in sorted order.
+Methodology
+1. Slide a k x k window over the matrix.
+2. Extract all elements inside the submatrix.
+3. Remove duplicates using a set.
+4. Sort the values.
+5. Compute minimum difference between adjacent elements.
+6. If only one unique value exists, return 0.
+Example
+Grid: [[1, -2, 3], [2, 3, 5]], k = 2
+
+Submatrix 1: [1, -2, 2, 3] -> Sorted: [-2,1,2,3] -> Min diff = 1
+Submatrix 2: [-2, 3, 3, 5] -> Unique: [-2,3,5] -> Min diff = 2
+Why It Works
+Sorting ensures that the closest numbers are adjacent. This reduces complexity compared to checking all pairs.
+Time Complexity
+O((m-k+1)*(n-k+1) * k^2 log k)
+Space Complexity
+O(k^2)
